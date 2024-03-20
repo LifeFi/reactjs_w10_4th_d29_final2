@@ -18,7 +18,7 @@ const Overlay = styled(motion.div)`
   width: 100%;
   height: 100%;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 `;
 
 const Detail = styled(motion.div)`
