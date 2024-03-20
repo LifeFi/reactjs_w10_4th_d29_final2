@@ -61,23 +61,17 @@ export default function Movies({
 }: {
   pathType: "" | "/now-playing" | "/coming-soon";
 }) {
-  const {
-    data,
-    isLoading,
-    hasNextPage,
-    isFetching,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery<IGetMoviesResult>({
-    queryKey: [pathType],
-    queryFn: ({ pageParam = 1 }) => getMovies(pathType, pageParam),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-    },
-  });
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery<IGetMoviesResult>({
+      queryKey: [pathType],
+      queryFn: ({ pageParam = 1 }) => getMovies(pathType, pageParam),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.page < lastPage.total_pages) {
+          return lastPage.page + 1;
+        }
+      },
+    });
 
   const loader = useRef(null);
 
