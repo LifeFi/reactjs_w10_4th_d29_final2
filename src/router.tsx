@@ -1,9 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "./pages/Root";
 import NotFound from "./pages/NotFound";
-import Popular from "./pages/Popular";
-import ComingSoon from "./pages/ComingSoon";
-import NowPlaying from "./pages/NowPlaying";
+import MovieDetail from "./pages/movieDetail";
+import Movies from "./pages/Movies";
 
 const router = createBrowserRouter([
   {
@@ -13,15 +12,33 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Popular />,
+        element: <Movies pathType="" />,
+        children: [
+          {
+            path: "movie/:movieId",
+            element: <MovieDetail />,
+          },
+        ],
       },
       {
         path: "coming-soon",
-        element: <ComingSoon />,
+        element: <Movies pathType="/coming-soon" />,
+        children: [
+          {
+            path: "movie/:movieId",
+            element: <MovieDetail />,
+          },
+        ],
       },
       {
         path: "now-playing",
-        element: <NowPlaying />,
+        element: <Movies pathType="/now-playing" />,
+        children: [
+          {
+            path: "movie/:movieId",
+            element: <MovieDetail />,
+          },
+        ],
       },
     ],
   },

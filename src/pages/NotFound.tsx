@@ -1,3 +1,10 @@
+import Nav from "../components/Nav";
+
 export default function NotFound() {
-  return <>404 Not Found</>;
+  return (
+    <>
+      <Nav />
+      404 Not Found
+    </>
+  );
 }

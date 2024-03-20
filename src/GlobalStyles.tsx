@@ -134,10 +134,22 @@ table {
 
 /* custom */
 body {
-  font-weight: 300;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.2;
+  background-color: black;
+  color: white;
+  /* padding-right: 20px;
+  box-sizing: border-box; */ 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   
+  // 스크롤바 숨김 - IE, Edge
+  -ms-overflow-style: none;
+
+}
+// 스크롤바 숨김 - Chrome, Safari 등 webkit 기반 브라우저.
+::-webkit-scrollbar {
+  display: none;
 }
 a {
   text-decoration:none;
