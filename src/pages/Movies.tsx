@@ -75,7 +75,7 @@ export default function Movies({
 
   const loader = useRef(null);
 
-  // console.log(data);
+  console.log(data);
   const match = useMatch(`${pathType}/movie/:movieId`);
 
   const selectedMovie =
@@ -126,22 +126,30 @@ export default function Movies({
         <Spinner />
       ) : (
         <>
-          <MovieList variants={movieListVariants} initial="start" animate="end">
+          <MovieList
+            variants={movieListVariants}
+            initial="start"
+            animate="end"
+            key={pathType}
+          >
             {data?.pages.map((page) =>
               page?.results.map((movie) => {
                 // console.log(`${pathType}/movie/${movie.id}`);
                 return (
-                  <MovieItem variants={movieItemVariants}>
+                  <MovieItem
+                    variants={movieItemVariants}
+                    key={`${pathType}/movie/${movie.id}`}
+                    layoutId={`${pathType}/movie/${movie.id}`}
+                  >
                     <motion.div
-                      layoutId={`${pathType}/movie/${movie.id}`}
-                      key={`${pathType}/movie/${movie.id}`}
+                      // key={`${pathType}/movie/${movie.id}`}
                       whileHover={{ y: -20 }}
                     >
                       <Link to={`movie/${movie.id}`}>
                         <img
                           style={{ width: "300px", objectFit: "cover" }}
                           alt={movie.title}
-                          src={makeImagePath(movie.poster_path)}
+                          src={makeImagePath(movie.poster_path, "w500")}
                         />
                       </Link>
                     </motion.div>

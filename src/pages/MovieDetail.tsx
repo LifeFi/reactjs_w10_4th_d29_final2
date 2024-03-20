@@ -114,7 +114,10 @@ export default function MovieDetail() {
   return (
     <Overlay onClick={onOverlayClick}>
       <Detail layoutId={path} onClick={onDetailClick}>
-        <img alt={movieId} src={makeImagePath(parentMovie?.poster_path)}></img>
+        <img
+          alt={movieId}
+          src={makeImagePath(parentMovie?.poster_path, "w500")}
+        />
         <CloseButton
           onClick={onOverlayClick}
           initial={{ opacity: 0 }}

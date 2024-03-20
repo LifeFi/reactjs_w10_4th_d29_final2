@@ -1,5 +1,7 @@
 const API_KEY = "34794ce3f355f2a8168e538558fc7106";
-const BASE_PATH = "https://api.themoviedb.org/3";
+const BASE_PATH = "https://api.themoviedb.org/3/movie";
+
+// const BASE_PATH = "https://movies-api.nomadcoders.workers.dev";
 
 export interface IMovie {
   id: number;
@@ -16,53 +18,64 @@ export interface IMovie {
 }
 
 export interface IGetMoviesResult {
-  dates: {
-    maximum: string;
-    minimum: string;
-  };
+  // dates: {
+  //   maximum: string;
+  //   minimum: string;
+  // };
   page: number;
   results: IMovie[];
   total_pages: number;
   total_results: number;
 }
 
-export interface IMovieDetail {
-  adult: boolean;
-  backdrop_path: string;
-  belongs_to_collection: string;
+export interface IMovieDetail extends IMovie {
+  belongs_to_collection: BelongsToCollection;
   budget: number;
-  genre_ids: { id: number; name: string }[];
   homepage: string;
-  id: number;
+  genres: Genre[];
   imdb_id: string;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: {
-    id: number;
-    logo_path: string;
-    name: string;
-    original_country: string;
-  }[];
-  production_countries: {
-    iso_3166_1: string;
-    name: string;
-  }[];
-  release_date: string;
+  production_companies: ProductionCompany[];
+  production_countries: ProductionCountry[];
   revenue: number;
   runtime: number;
-  spoken_languages: {
-    iso_639_1: string;
-    name: string;
-  }[];
+  spoken_languages: SpokenLanguage[];
   status: string;
   tagline: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
+}
+
+interface BelongsToCollection {
+  id: number;
+  name: string;
+  poster_path: string;
+  backdrop_path: string;
+}
+
+interface Genre {
+  id: number;
+  name: string;
+}
+
+interface ProductionCompany {
+  id: number;
+  logo_path: string;
+  name: string;
+  origin_country: string;
+}
+
+interface ProductionCountry {
+  iso_3166_1: string;
+  name: string;
+}
+
+interface SpokenLanguage {
+  english_name: string;
+  iso_639_1: string;
+  name: string;
+}
+
+export interface IAPIResponse {
+  page: number;
+  results: IMovie[];
 }
 
 export function getMovies(
@@ -80,7 +93,7 @@ export function getMovies(
   );
 
   return fetch(
-    `${BASE_PATH}/movie/${
+    `${BASE_PATH}/${
       pathType === ""
         ? "popular"
         : pathType === "/now-playing"
@@ -93,27 +106,27 @@ export function getMovies(
 export function getPopularMovies(pageParam: number | unknown = 1) {
   console.log("getMovies Popular ===============");
   return fetch(
-    `${BASE_PATH}/movie/popular?api_key=${API_KEY}&page=${pageParam}`
+    `${BASE_PATH}/popular?api_key=${API_KEY}&page=${pageParam}`
   ).then((response) => response.json());
 }
 
 export function getNowPlayingMovies(pageParam: number | unknown = 1) {
   console.log("getMovies Now Playing ===============");
   return fetch(
-    `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&page=${pageParam}`
+    `${BASE_PATH}/now_playing?api_key=${API_KEY}&page=${pageParam}`
   ).then((response) => response.json());
 }
 
 export function getComingSoonMovies(pageParam: number | unknown = 1) {
   console.log("getMovies Upcoming ===============");
   return fetch(
-    `${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&page=${pageParam}`
+    `${BASE_PATH}/upcoming?api_key=${API_KEY}&page=${pageParam}`
   ).then((response) => response.json());
 }
 
 export function getMovie(movieId: number) {
   console.log("getMovie ===============");
-  return fetch(`${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}`).then(
-    (response) => response.json()
+  return fetch(`${BASE_PATH}/${movieId}?api_key=${API_KEY}`).then((response) =>
+    response.json()
   );
 }
