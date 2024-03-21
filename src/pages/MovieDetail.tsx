@@ -19,6 +19,8 @@ const Overlay = styled(motion.div)`
   height: 100%;
   top: 0;
   background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
 `;
 
 const Detail = styled(motion.div)`
@@ -26,27 +28,41 @@ const Detail = styled(motion.div)`
   height: 90vh;
   display: flex;
   flex-direction: column;
-  margin: 50px auto;
+  margin-top: 50px;
   padding-bottom: 20px;
   /* position: relative; */
   border-radius: 15px;
   overflow: scroll;
-  border: 1px solid white;
+  border: 2px solid;
   background-color: black;
+  animation: borderFadeIn 1s ease-in-out;
 
-  img {
-    height: 480px;
-    object-fit: cover;
-    object-position: top;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+  @keyframes borderFadeIn {
+    from {
+      border-color: transparent;
+    }
+    to {
+      border-color: white;
+    }
   }
+`;
+
+const Img = styled.div<{ $bgPhoto: string }>`
+  height: 480px;
+  width: 100%;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.9)
+    ),
+    url(${(props) => props.$bgPhoto});
+  background-size: cover;
 `;
 
 const CloseButton = styled(motion.div)`
   position: absolute;
   right: calc(50% - 230px);
-  top: calc(5vh + 20px);
+  top: 65px;
   width: 35px;
   height: 35px;
   /* border-radius: 50%;
@@ -114,10 +130,7 @@ export default function MovieDetail() {
   return (
     <Overlay onClick={onOverlayClick}>
       <Detail layoutId={path} onClick={onDetailClick}>
-        <img
-          alt={movieId}
-          src={makeImagePath(parentMovie?.poster_path, "w500")}
-        />
+        <Img $bgPhoto={makeImagePath(parentMovie?.poster_path, "w500")} />
         <CloseButton
           onClick={onOverlayClick}
           initial={{ opacity: 0 }}

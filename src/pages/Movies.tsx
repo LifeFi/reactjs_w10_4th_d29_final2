@@ -1,29 +1,10 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { IGetMoviesResult, IMovie, getMovies } from "../api";
-import { makeImagePath } from "../utils";
 import styled from "styled-components";
-import { Link, Outlet, useMatch } from "react-router-dom";
-import { motion } from "framer-motion";
+import { Outlet, useMatch } from "react-router-dom";
 import { useCallback, useEffect, useRef } from "react";
 import Spinner from "../components/Spinner";
-
-const MovieList = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-`;
-
-const MovieItem = styled(motion.div)`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  img {
-    border-radius: 15px;
-  }
-  span {
-    padding: 10px 0;
-  }
-`;
+import MovieList from "../components/MovieList";
 
 const LoadMore = styled.div`
   width: 100%;
@@ -36,25 +17,6 @@ const LoadMore = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-
-const movieListVariants = {
-  start: { scale: 0, opacity: 0 },
-  end: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      delayChildren: 0.2,
-      staggerChildren: 0.2,
-    },
-  },
-};
-const movieItemVariants = {
-  start: { scale: 0, opacity: 0 },
-  end: {
-    scale: 1,
-    opacity: 1,
-  },
-};
 
 export default function Movies({
   pathType,
@@ -72,11 +34,9 @@ export default function Movies({
         }
       },
     });
-
-  const loader = useRef(null);
-
-  console.log(data);
+  // console.log(data);
   const match = useMatch(`${pathType}/movie/:movieId`);
+  const loader = useRef(null);
 
   const selectedMovie =
     match?.params.movieId &&
@@ -88,7 +48,6 @@ export default function Movies({
         page.results.find((movie) => movie.id + "" === match.params.movieId),
       undefined
     );
-
   // console.log("selectedMovie", selectedMovie);
 
   // Infinity Scrolling
@@ -126,40 +85,7 @@ export default function Movies({
         <Spinner />
       ) : (
         <>
-          <MovieList
-            variants={movieListVariants}
-            initial="start"
-            animate="end"
-            key={pathType}
-          >
-            {data?.pages.map((page) =>
-              page?.results.map((movie) => {
-                // console.log(`${pathType}/movie/${movie.id}`);
-                return (
-                  <MovieItem
-                    variants={movieItemVariants}
-                    key={`${pathType}/movie/${movie.id}`}
-                    layoutId={`${pathType}/movie/${movie.id}`}
-                  >
-                    <motion.div
-                      // key={`${pathType}/movie/${movie.id}`}
-                      whileHover={{ y: -20 }}
-                    >
-                      <Link to={`movie/${movie.id}`}>
-                        <img
-                          style={{ width: "300px", objectFit: "cover" }}
-                          alt={movie.title}
-                          src={makeImagePath(movie.poster_path, "w500")}
-                        />
-                      </Link>
-                    </motion.div>
-                    <span>{movie.title}</span>
-                  </MovieItem>
-                );
-              })
-            )}
-          </MovieList>
-
+          <MovieList data={data} pathType={pathType} />
           {isFetchingNextPage ? (
             <Spinner />
           ) : (
